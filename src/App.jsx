@@ -4,15 +4,18 @@ import "./App.css";
 const STORAGE_KEY = "vibe_groceries_v1";
 
 const DEFAULT_CATEGORIES = [
-  "Produce",
+  "Fruits and Vegetables",
   "Dairy",
   "Meat & Fish",
-  "Bakery",
+  "Nuts",
+  "Canned Goods",
+  "Frozen Foods",
+  "Baking",
+  "Spices & Herbs",
   "Pasta & Grains",
+  "Alcogol",
   "Drinks",
-  "Sweets",
   "Household",
-  "Other",
 ];
 
 function uid() {
@@ -159,7 +162,7 @@ export default function App() {
   }
 
   function clearChecked() {
-    setItems((prev) => prev.filter((i) => !i.checked));
+    setItems((prev) => prev.map((i) => (i.checked ? { ...i, checked: false } : i)));
   }
 
   function clearAll() {
@@ -184,15 +187,29 @@ export default function App() {
   const checkedCount = items.filter((i) => i.checked).length;
 
   return (
-    <div className="wrap">
+    <div className={`wrap ${mode === "shop" ? "shop-mode" : ""}`}>
       <header className="header">
-        <h1>Shopping List</h1>
+        <div className="header-title">
+          <h1>Shopping List</h1>
+          <div className="mode-switch-container">
+            <span className="switch-label">{mode === "edit" ? "shopping" : "edit"}</span>
+            <label className="mode-switch">
+              <input
+                type="checkbox"
+                checked={mode === "shop"}
+                onChange={(e) => setMode(e.target.checked ? "shop" : "edit")}
+              />
+              <span className="switch-slider"></span>
+            </label>
+          </div>
+        </div>
         <div className="meta">
           <span>Total: {totalCount}</span>
           <span>Bought: {checkedCount}</span>
         </div>
       </header>
 
+      {mode === "edit" && (
       <section className="panel">
         <form className="form" onSubmit={addItem}>
           <div className="row">
@@ -288,6 +305,7 @@ export default function App() {
           </button>
         </div>
       </section>
+      )}
 
       <main className="list">
         {Object.keys(grouped).length === 0 || visibleItems.length === 0 ? (
