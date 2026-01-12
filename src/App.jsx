@@ -37,12 +37,56 @@ function loadItems() {
   }
 }
 
+function serializeForUrl(data) {
+  try {
+    const json = JSON.stringify(data);
+    const bytes = new TextEncoder().encode(json);
+    let binary = "";
+    for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+    const b64 = btoa(binary);
+    return b64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+  } catch {
+    return null;
+  }
+}
+
+function deserializeFromUrl(s) {
+  try {
+    if (!s) return null;
+    let b64 = s.replace(/-/g, "+").replace(/_/g, "/");
+    const pad = b64.length % 4;
+    if (pad) b64 += "=".repeat(4 - pad);
+    const bin = atob(b64);
+    const bytes = new Uint8Array([...bin].map((c) => c.charCodeAt(0)));
+    const json = new TextDecoder().decode(bytes);
+    const parsed = JSON.parse(json);
+    return Array.isArray(parsed) ? parsed : null;
+  } catch {
+    return null;
+  }
+}
+
 function saveItems(items) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
 }
 
 export default function App() {
-  const [items, setItems] = useState(() => loadItems());
+  function initItems() {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const shared = params.get("shared");
+      const parsed = deserializeFromUrl(shared);
+      if (Array.isArray(parsed) && parsed.length >= 0) {
+        return parsed;
+      }
+    } catch {
+      // ignore and fallback
+    }
+    return loadItems();
+  }
+
+  const [items, setItems] = useState(() => initItems());
+  const [copied, setCopied] = useState(false);
   const [mode, setMode] = useState("edit"); // edit | shop
   const [groupByCategory, setGroupByCategory] = useState(true);
   const [sortBy, setSortBy] = useState("category"); // category | name | created
@@ -59,6 +103,27 @@ export default function App() {
     saveItems(items);
   }, [items]);
 
+  function shareList() {
+    try {
+      const encoded = serializeForUrl(items || []);
+      if (!encoded) return;
+      const url = new URL(window.location.href);
+      url.searchParams.set("shared", encoded);
+      const shareUrl = url.toString();
+      navigator.clipboard
+        .writeText(shareUrl)
+        .then(() => {
+          setCopied(true);
+          setTimeout(() => setCopied(false), 2000);
+        })
+        .catch(() => {
+          // ignore clipboard error silently
+        });
+    } catch (err) {
+      // ignore
+    }
+  }
+
   const allCategories = useMemo(() => {
     const dynamic = new Set(items.map((i) => i.category).filter(Boolean));
     DEFAULT_CATEGORIES.forEach((c) => dynamic.add(c));
@@ -70,6 +135,11 @@ export default function App() {
 
     if (categoryFilter !== "All") {
       arr = arr.filter((i) => i.category === categoryFilter);
+    }
+
+    // In shopping mode hide items with zero or non-positive quantity
+    if (mode === "shop") {
+      arr = arr.filter((i) => Number(i.qty || 0) > 0);
     }
 
     // base sort
@@ -116,7 +186,9 @@ export default function App() {
     if (!n) return;
 
     const c = normalize(category) || "Other";
-    const q = Number(qty);
+    const qRaw = qty;
+    const qNum = Number(qRaw);
+    const q = qRaw === "" || !Number.isFinite(qNum) ? undefined : qNum;
     const u = normalize(unit) || "kg";
 
     // If same product in same category + unit exists: increase quantity
@@ -128,7 +200,8 @@ export default function App() {
       const next = [...items];
       next[existingIndex] = {
         ...next[existingIndex],
-        qty: Number(next[existingIndex].qty || 0) + (Number.isFinite(q) && q > 0 ? q : 1),
+        qty:
+          Number(next[existingIndex].qty || 0) + (q === undefined ? 1 : Number.isFinite(q) && q >= 0 ? q : 1),
         checked: false,
       };
       setItems(next);
@@ -139,7 +212,7 @@ export default function App() {
           id: uid(),
           name: n,
           category: c,
-          qty: Number.isFinite(q) && q > 0 ? q : 1,
+          qty: q === undefined ? 1 : Number.isFinite(q) && q >= 0 ? q : 1,
           unit: u,
           checked: false,
           createdAt: Date.now(),
@@ -177,7 +250,7 @@ export default function App() {
     setItems((prev) =>
       prev.map((i) => {
         if (i.id !== id) return i;
-        const next = Math.max(1, Number(i.qty || 1) - 1);
+        const next = Math.max(0, Number(i.qty || 0) - 1);
         return { ...i, qty: next };
       })
     );
@@ -208,10 +281,23 @@ export default function App() {
           </div>
         </div>
         <div className="meta">
-          <span>Total: {totalCount}</span>
-          <span>Bought: {checkedCount}</span>
+          <div style={{display: 'flex', gap: 12, alignItems: 'center'}}>
+            <button
+              className="chip primary"
+              onClick={shareList}
+              style={{padding: '8px 12px', fontSize: 14, touchAction: 'manipulation', color:"blue"}}
+            >
+              Share
+            </button>
+            {copied && <span style={{marginLeft:4, fontSize:13}}>Link copied</span>}
+          </div>
         </div>
       </header>
+
+      <div className="meta-count">
+        <span>Total: {totalCount}</span>
+        <span>Bought: {checkedCount}</span>
+      </div>
 
       {mode === "edit" && (
       <section className="panel">
@@ -226,8 +312,16 @@ export default function App() {
                 placeholder="e.g. Milk"
               />
             </label>
-
             <label>
+              Quantity
+              <input type="number" min="0" step="1" value={qty} onChange={(e) => setQty(e.target.value)} />
+            </label>
+
+          </div>
+
+          <div className="row">
+
+              <label>
               Category
               <select value={category} onChange={(e) => setCategory(e.target.value)}>
                 {DEFAULT_CATEGORIES.map((c) => (
@@ -237,13 +331,7 @@ export default function App() {
                 ))}
               </select>
             </label>
-          </div>
 
-          <div className="row">
-            <label>
-              Quantity
-              <input type="number" min="1" step="1" value={qty} onChange={(e) => setQty(e.target.value)} />
-            </label>
 
             <label>
               Unit
@@ -255,11 +343,22 @@ export default function App() {
                 <option value="pack">pack</option>
               </select>
             </label>
-
+          </div>
+          <div >
             <button className="primary" type="submit">
               Add
             </button>
-          </div>
+          
+            {/* <label className="chip checkbox">
+            <input
+              type="checkbox"
+              checked={groupByCategory}
+              onChange={(e) => setGroupByCategory(e.target.checked)}
+            />
+            Group by category
+            </label> */}
+            
+           </div>
         </form>
 
         <div className="controls">
@@ -281,34 +380,27 @@ export default function App() {
               ))}
             </select>
           </label>
-
-          <label className="chip">
+          <div>
+            {/*   <label className="chip">
             Sort by:
-            <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-              <option value="category">Category</option>
-              <option value="name">Name</option>
-              <option value="created">Date added</option>
-            </select>
-          </label>
+              <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+               <option value="category">Category</option>
+               <option value="name">Name</option>
+               <option value="created">Date added</option>
+             </select>
+            </label> */}
 
-          <label className="chip checkbox">
-            <input
-              type="checkbox"
-              checked={groupByCategory}
-              onChange={(e) => setGroupByCategory(e.target.checked)}
-            />
-            Group by category
-          </label>
+            { /* <div className="spacer" /> */}
 
-          <div className="spacer" />
+           <button className="chip" onClick={clearChecked} disabled={checkedCount === 0}>
+              Clear bought
+            </button>
+            <button className="chip" onClick={clearAll} disabled={items.length === 0}>
+             Clear all
+            </button>
+          </div>
 
-          <button className="chip" onClick={clearChecked} disabled={checkedCount === 0}>
-            Clear bought
-          </button>
-          <button className="chip" onClick={clearAll} disabled={items.length === 0}>
-            Clear all
-          </button>
-        </div>
+          </div>
       </section>
       )}
 

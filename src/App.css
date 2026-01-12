@@ -1,5 +1,5 @@
 :root {
-  --bg: rgba(0,0,0,0.04);
+  /*--bg: rgba(0,0,0,0.04);*/
   --card: #fff;
   --text: rgba(0,0,0,0.9);
   --muted: rgba(0,0,0,0.65);
@@ -10,13 +10,14 @@
 }
 
 body {
+  max-width: 390px;
   margin: 0;
   background: var(--bg);
   color: var(--text);
 }
 
 .wrap {
-  max-width: 980px;
+  max-width: 350px;
   margin: 0 auto;
   padding: 20px;
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
@@ -113,6 +114,13 @@ body {
   color: var(--muted);
 }
 
+.meta-count {
+  display: flex;
+  gap: 12px;
+  color: var(--accent-purple);
+  margin-bottom: 12px;
+}
+
 .panel {
   background: var(--card);
   border: 1px solid var(--border);
@@ -120,33 +128,37 @@ body {
   padding: 16px;
   box-shadow: var(--shadow);
   margin-bottom: 14px;
+  
 }
 
 .form .row {
   display: grid;
-  grid-template-columns: 1.4fr 1fr;
-  gap: 12px;
+  grid-template-columns: 1fr 1fr; 
+  gap: 8px;
   margin-bottom: 12px;
 }
 
-.form .row:last-child {
-  grid-template-columns: 1fr 0.8fr auto;
+/* .form .row:last-child {
+  /* grid-template-columns: 1fr 1fr; 
   align-items: end;
-}
+} 
+*/
 
 label {
   display: grid;
   gap: 6px;
   font-size: 13px;
-  color: var(--muted);
 }
 
-input, select, button {
+input, select, button { /* text in bubbles */
   font: inherit;
+  
+  
 }
 
-input, select {
-  padding: 10px 12px;
+input, select { /* bubbles */
+  grid-template-columns: 1fr 1fr; 
+  padding: 10px 3px;
   border: 1px solid var(--border);
   border-radius: 12px;
   outline: none;
@@ -154,6 +166,7 @@ input, select {
   transition: border-color 120ms ease, box-shadow 120ms ease;
   color: var(--black);
   caret-color: var(--black);
+  
 }
 
 input:focus, select:focus {
@@ -185,6 +198,7 @@ button {
   border-radius: 12px;
   padding: 10px 12px;
   cursor: pointer;
+    margin-right: 10px;
   transition: transform 120ms ease, box-shadow 120ms ease, border-color 120ms ease;
 }
 
@@ -211,7 +225,6 @@ button.primary {
 
 button.ghost {
   background: transparent;
- 
 }
 
 button.danger {
@@ -278,7 +291,7 @@ ul {
 
 .qty {  
   font-variant-numeric: tabular-nums;  
-  color: var(--muted); // текст кол-во в списке
+  color: var(--muted); /* текст кол-во в списке */
   white-space: nowrap;
 }
 
@@ -328,7 +341,7 @@ ul {
   padding: 18px;
   border: 1px dashed rgba(0,0,0,0.25);
   border-radius: 16px;
-  color: var(--muted); // текст когда список пустой
+  color: var(--muted); /* текст когда список пустой */
   background: rgba(255,255,255,0.7);
 }
 
