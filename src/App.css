@@ -200,8 +200,9 @@ button:active {
 }
 
 button.small {
-  padding: 6px 10px;
-  border-radius: 12px;
+  padding: 6px 8px;
+  border-radius: 10px;
+  font-size: 12px;
 }
 
 button.primary {
@@ -210,6 +211,7 @@ button.primary {
 
 button.ghost {
   background: transparent;
+ 
 }
 
 button.danger {
@@ -256,7 +258,7 @@ ul {
 }
 
 .wrap.shop-mode .item .name {
-  font-size: calc(1em + 2pt);
+  font-size: calc(17px);
 }
 
 .item.checked {
@@ -265,7 +267,7 @@ ul {
 
 .item.checked .name {
   text-decoration: line-through;
-  color: var(--accent-purple);
+  /* color: var(--accent-purple); */
 }
 
 .check {
@@ -282,8 +284,44 @@ ul {
 
 .actions {
   display: inline-flex;
-  gap: 6px;
+  gap: 12px;
   align-items: center;
+}
+
+.unit-select {
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  outline: none;
+  background: transparent;
+  font-size: inherit;
+  color: inherit;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  text-decoration: none;
+  position: relative;
+  display: inline-block;
+  transition: background-color 120ms ease, text-decoration 120ms ease;
+}
+
+.unit-select:hover {
+  background-color: rgba(181, 124, 255, 0.1);
+  text-decoration: underline;
+  text-decoration-color: var(--accent-purple);
+  text-underline-offset: 2px;
+}
+
+.unit-select:focus {
+  background-color: rgba(181, 124, 255, 0.15);
+  text-decoration: underline;
+  text-decoration-color: var(--accent-purple);
+  text-underline-offset: 2px;
+}
+
+.unit-select:active {
+  background-color: rgba(181, 124, 255, 0.2);
 }
 
 .empty {

@@ -52,7 +52,7 @@ export default function App() {
   const [name, setName] = useState("");
   const [category, setCategory] = useState(DEFAULT_CATEGORIES[0]);
   const [qty, setQty] = useState(1);
-  const [unit, setUnit] = useState("pcs");
+  const [unit, setUnit] = useState("kg");
   const nameRef = useRef(null);
 
   useEffect(() => {
@@ -117,7 +117,7 @@ export default function App() {
 
     const c = normalize(category) || "Other";
     const q = Number(qty);
-    const u = normalize(unit) || "pcs";
+    const u = normalize(unit) || "kg";
 
     // If same product in same category + unit exists: increase quantity
     const existingIndex = items.findIndex(
@@ -149,7 +149,7 @@ export default function App() {
 
     setName("");
     setQty(1);
-    setUnit("pcs");
+    setUnit("kg");
     nameRef.current?.focus();
   }
 
@@ -181,6 +181,10 @@ export default function App() {
         return { ...i, qty: next };
       })
     );
+  }
+
+  function changeUnit(id, newUnit) {
+    setItems((prev) => prev.map((i) => (i.id === id ? { ...i, unit: newUnit } : i)));
   }
 
   const totalCount = items.length;
@@ -246,6 +250,7 @@ export default function App() {
               <select value={unit} onChange={(e) => setUnit(e.target.value)}>
                 <option value="pcs">pcs</option>
                 <option value="kg">kg</option>
+                <option value="grams">grams</option>
                 <option value="l">l</option>
                 <option value="pack">pack</option>
               </select>
@@ -258,13 +263,13 @@ export default function App() {
         </form>
 
         <div className="controls">
-          <label className="chip">
+          {/*// <label className="chip">
             Mode:
             <select value={mode} onChange={(e) => setMode(e.target.value)}>
               <option value="edit">Edit</option>
               <option value="shop">In store</option>
             </select>
-          </label>
+          </label> */}
 
           <label className="chip">
             Filter:
@@ -297,10 +302,10 @@ export default function App() {
 
           <div className="spacer" />
 
-          <button className="ghost" onClick={clearChecked} disabled={checkedCount === 0}>
+          <button className="chip" onClick={clearChecked} disabled={checkedCount === 0}>
             Clear bought
           </button>
-          <button className="danger" onClick={clearAll} disabled={items.length === 0}>
+          <button className="chip" onClick={clearAll} disabled={items.length === 0}>
             Clear all
           </button>
         </div>
@@ -331,17 +336,34 @@ export default function App() {
                       <span className="name">{it.name}</span>
                     )}
 
-                    <span className="qty">
-                      {it.qty} {it.unit}
-                    </span>
+                    {mode === "edit" ? (
+                      <span className="qty">
+                        {it.qty}{" "}
+                        <select
+                          value={it.unit}
+                          onChange={(e) => changeUnit(it.id, e.target.value)}
+                          className="unit-select"
+                        >
+                          <option value="pcs">pcs</option>
+                          <option value="kg">kg</option>
+                          <option value="grams">grams</option>
+                          <option value="l">l</option>
+                          <option value="pack">pack</option>
+                        </select>
+                      </span>
+                    ) : (
+                      <span className="qty">
+                        {it.qty} {it.unit}
+                      </span>
+                    )}
 
                     {mode === "edit" ? (
                       <div className="actions">
-                        <button className="small" onClick={() => decQty(it.id)} title="Decrease">
-                          −
-                        </button>
                         <button className="small" onClick={() => incQty(it.id)} title="Increase">
                           +
+                        </button>
+                        <button className="small" onClick={() => decQty(it.id)} title="Decrease">
+                          −
                         </button>
                         <button className="small danger" onClick={() => removeItem(it.id)} title="Remove">
                           ✕
