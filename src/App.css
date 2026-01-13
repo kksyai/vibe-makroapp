@@ -264,12 +264,19 @@ button.small {
 button.primary { /* кнопка Add */
   font-weight: 300;
   font-size: 13px;
-  color: var(--black);
+  color: white;
   padding: 10px 12px;
   margin-right: 0px;
   align-items: right;  
   width: 80%;
   margin-left: auto;
+  background: #ffb3d9;
+  border: none;
+}
+
+button.primary:active {
+  transform: translateY(0);
+  box-shadow: none;
 }
 
 button.ghost {
@@ -320,9 +327,26 @@ ul {
   margin-bottom: 8px;
 }
 
-.wrap.shop-mode .item .name {
-  font-size: calc(17px);
+/* Shopping mode: align checkbox to the left and use compact layout */
+.wrap.shop-mode .item {
+  grid-template-columns: auto 1fr auto;
 }
+
+.wrap.shop-mode .item .check {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.wrap.shop-mode .item .check input {
+  width: 20px;
+  height: 20px;
+}
+
+.wrap.shop-mode .item .name {
+  font-size: 17px;
+}
+
 
 .item.checked {
   opacity: 0.6;
@@ -349,6 +373,27 @@ ul {
   display: inline-flex;
   gap: 12px;
   align-items: center;
+}
+
+/* Circular touch-friendly action buttons (+, -, x) */
+.actions .small {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+.actions .small.danger {
+  border-color: rgba(0,0,0,0.28);
+}
+
+@media (max-width: 420px) {
+  .actions .small { width: 44px; height: 44px; font-size: 18px; }
+  .share-button { padding: 12px 16px; }
 }
 
 .unit-select {
