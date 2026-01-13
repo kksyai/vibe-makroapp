@@ -4,7 +4,7 @@ import "./App.css";
 const STORAGE_KEY = "vibe_groceries_v1";
 
 const DEFAULT_CATEGORIES = [
-  "Fruits and Vegetables",
+  "Fruits & Vegetables",
   "Dairy",
   "Meat & Fish",
   "Nuts",
@@ -266,38 +266,43 @@ export default function App() {
   return (
     <div className={`wrap ${mode === "shop" ? "shop-mode" : ""}`}>
       <header className="header">
-        <div className="header-title">
-          <h1>Shopping List</h1>
-          <div className="mode-switch-container">
-            <span className="switch-label">{mode === "edit" ? "shopping" : "edit"}</span>
-            <label className="mode-switch">
-              <input
-                type="checkbox"
-                checked={mode === "shop"}
-                onChange={(e) => setMode(e.target.checked ? "shop" : "edit")}
-              />
-              <span className="switch-slider"></span>
-            </label>
+          <div className="header-left">
+            <div className="header-title">
+              <h1>Shopping List</h1>
+            </div>
+            <div className="meta">
+              <div className="meta-count">
+                <span>Total: {totalCount}</span>
+                <span>Bought: {checkedCount}</span>
+              </div>
+            </div>
           </div>
-        </div>
-        <div className="meta">
-          <div style={{display: 'flex', gap: 12, alignItems: 'center'}}>
-            <button
-              className="chip primary"
-              onClick={shareList}
-              style={{padding: '8px 12px', fontSize: 14, touchAction: 'manipulation', color:"blue"}}
-            >
-              Share
-            </button>
-            {copied && <span style={{marginLeft:4, fontSize:13}}>Link copied</span>}
-          </div>
-        </div>
-      </header>
 
-      <div className="meta-count">
-        <span>Total: {totalCount}</span>
-        <span>Bought: {checkedCount}</span>
-      </div>
+          <div className="header-right">
+            <div style={{display: 'flex', alignItems: 'center', gap: 8}}>
+              <button
+                className="chip share-button"
+                onClick={shareList}
+                aria-label="Share list"
+              >
+                Share
+              </button>
+              {copied && <span className="copied-badge">Link copied</span>}
+            </div>
+
+            <div className="mode-switch-container">
+              <span className="switch-label">{mode === "edit" ? "shopping" : "edit"}</span>
+              <label className="mode-switch">
+                <input
+                  type="checkbox"
+                  checked={mode === "shop"}
+                  onChange={(e) => setMode(e.target.checked ? "shop" : "edit")}
+                />
+                <span className="switch-slider"></span>
+              </label>
+            </div>
+          </div>
+        </header>
 
       {mode === "edit" && (
       <section className="panel">
@@ -312,16 +317,8 @@ export default function App() {
                 placeholder="e.g. Milk"
               />
             </label>
+
             <label>
-              Quantity
-              <input type="number" min="0" step="1" value={qty} onChange={(e) => setQty(e.target.value)} />
-            </label>
-
-          </div>
-
-          <div className="row">
-
-              <label>
               Category
               <select value={category} onChange={(e) => setCategory(e.target.value)}>
                 {DEFAULT_CATEGORIES.map((c) => (
@@ -331,7 +328,13 @@ export default function App() {
                 ))}
               </select>
             </label>
+          </div>
 
+          <div className="row">
+            <label>
+              Quantity
+              <input type="number" min="0" step="1" value={qty} onChange={(e) => setQty(e.target.value)} />
+            </label>
 
             <label>
               Unit
@@ -343,11 +346,12 @@ export default function App() {
                 <option value="pack">pack</option>
               </select>
             </label>
-          </div>
-          <div >
+
             <button className="primary" type="submit">
               Add
             </button>
+          </div>
+            
           
             {/* <label className="chip checkbox">
             <input
@@ -358,7 +362,7 @@ export default function App() {
             Group by category
             </label> */}
             
-           </div>
+          
         </form>
 
         <div className="controls">
