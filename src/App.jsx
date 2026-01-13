@@ -243,15 +243,33 @@ export default function App() {
   }
 
   function incQty(id) {
-    setItems((prev) => prev.map((i) => (i.id === id ? { ...i, qty: Number(i.qty || 0) + 1 } : i)));
+    setItems((prev) => prev.map((i) => (i.id === id ? { ...i, qty: Number(i.qty || 0) + (i.unit === 'kg' ? 0.1 : 1) } : i)));
   }
 
   function decQty(id) {
     setItems((prev) =>
       prev.map((i) => {
         if (i.id !== id) return i;
-        const next = Math.max(0, Number(i.qty || 0) - 1);
-        return { ...i, qty: next };
+        const step = i.unit === 'kg' ? 0.1 : 1;
+        const next = Math.max(0, Number(i.qty || 0) - step);
+        return { ...i, qty: i.unit === 'kg' ? Math.round(next * 10) / 10 : next };
+      })
+    );
+  }
+
+  function changeQtyInline(id, raw) {
+    // allow comma as decimal separator for kg
+    setItems((prev) =>
+      prev.map((i) => {
+        if (i.id !== id) return i;
+        const u = i.unit;
+        let s = String(raw ?? "").trim();
+        if (u === "kg") s = s.replace(/,/g, ".");
+        // allow digits and optional dot
+        if (!/^[0-9]*\.?[0-9]*$/.test(s)) return i;
+        const parsed = u === "kg" ? parseFloat(s || "0") : parseInt(s || "0", 10);
+        const val = Number.isFinite(parsed) ? parsed : 0;
+        return { ...i, qty: u === "kg" ? Math.max(0, Math.round(val * 10) / 10) : Math.max(0, Math.round(val)) };
       })
     );
   }
@@ -348,7 +366,7 @@ export default function App() {
               <select value={unit} onChange={(e) => setUnit(e.target.value)}>
                 <option value="pcs">pcs</option>
                 <option value="kg">kg</option>
-                <option value="grm">grm</option>
+                <option value="g">g</option>
                 <option value="l">l</option>
                 <option value="pack">pack</option>
               </select>
@@ -441,7 +459,12 @@ export default function App() {
 
                     {mode === "edit" ? (
                       <span className="qty">
-                        {it.qty}{" "}
+                        <input
+                          className="inline-qty"
+                          value={String(it.qty)}
+                          inputMode={it.unit === "kg" ? "decimal" : "numeric"}
+                          onChange={(e) => changeQtyInline(it.id, e.target.value)}
+                        />
                         <select
                           value={it.unit}
                           onChange={(e) => changeUnit(it.id, e.target.value)}
@@ -449,7 +472,7 @@ export default function App() {
                         >
                           <option value="pcs">pcs</option>
                           <option value="kg">kg</option>
-                          <option value="grams">grams</option>
+                          <option value="g">g</option>
                           <option value="l">l</option>
                           <option value="pack">pack</option>
                         </select>
