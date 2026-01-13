@@ -154,7 +154,7 @@ export default function App() {
     });
 
     return arr;
-  }, [items, sortBy, categoryFilter]);
+  }, [items, sortBy, categoryFilter, mode]);
 
   const grouped = useMemo(() => {
     if (!groupByCategory) return { "": visibleItems };
