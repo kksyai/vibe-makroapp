@@ -338,9 +338,38 @@ ul {
   gap: 12px;
 }
 
+/* shopping-mode: round, larger checkbox for items */
 .wrap.shop-mode .item .check input {
-  width: 20px;
-  height: 20px;
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  background: white;
+  display: inline-block;
+  cursor: pointer;
+  transition: background 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
+}
+.wrap.shop-mode .item .check input:checked {
+  background: var(--accent-purple);
+  border-color: var(--accent-purple);
+  box-shadow: inset 0 0 0 6px white; /* white inner circle */
+}
+
+/* edit-mode chip checkboxes: smaller, tighter spacing, align to right inside chip */
+.chip.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 160px;
+  justify-content: space-between;
+}
+.chip.checkbox input[type="checkbox"] {
+  width: 14px;
+  height: 14px;
+  margin-left: 12px;
+  transform: translateY(-1px);
 }
 
 .wrap.shop-mode .item .name {
