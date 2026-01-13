@@ -166,7 +166,7 @@ body {
 label {
   display: grid;
   gap: 6px;
-  font-size: 13px;
+  font-size: 1em;
 }
 
 input, select, button { /* text in bubbles */
@@ -223,7 +223,7 @@ button {
 button.chip {
   border: 1px solid var(--border);
   border-radius: 20px;
-  font-size: 13px;
+  font-size: 1em;
   color: var(--black);
   padding: 10px 12px;
   cursor: pointer;
@@ -264,7 +264,7 @@ button.small {
 
 button.primary { /* кнопка Add */
   font-weight: 300;
-  font-size: 13px;
+  /* font-size: 13px; */
   color: white;
   padding: 10px 12px;
   margin-right: 0px;
@@ -375,7 +375,7 @@ ul {
 }
 
 .wrap.shop-mode .item .name {
-  font-size: 17px;
+  font-size: 1em;
 }
 
 

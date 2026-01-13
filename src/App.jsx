@@ -336,7 +336,7 @@ export default function App() {
               <input
                 type="number"
                 min="0"
-                step={unit === "kg" ? "0.1" : "1"}
+                step={unit === "kg" ? "0,1" : "1"}
                 inputMode={unit === "kg" ? "decimal" : "numeric"}
                 value={qty}
                 onChange={(e) => setQty(e.target.value)}
@@ -348,7 +348,7 @@ export default function App() {
               <select value={unit} onChange={(e) => setUnit(e.target.value)}>
                 <option value="pcs">pcs</option>
                 <option value="kg">kg</option>
-                <option value="grams">grams</option>
+                <option value="grm">grm</option>
                 <option value="l">l</option>
                 <option value="pack">pack</option>
               </select>
