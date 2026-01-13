@@ -333,7 +333,14 @@ export default function App() {
           <div className="row">
             <label>
               Quantity
-              <input type="number" min="0" step="1" value={qty} onChange={(e) => setQty(e.target.value)} />
+              <input
+                type="number"
+                min="0"
+                step={unit === "kg" ? "0.1" : "1"}
+                inputMode={unit === "kg" ? "decimal" : "numeric"}
+                value={qty}
+                onChange={(e) => setQty(e.target.value)}
+              />
             </label>
 
             <label>
