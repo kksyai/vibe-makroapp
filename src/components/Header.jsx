@@ -4,7 +4,7 @@ export default function Header({ mode, onToggleMode, totalCount, checkedCount, o
   return (
     <header className="header">
       <div className="header-left">
-        <h1 className="header-title">Shopping List</h1>
+        <h1 className="header-title">Vibe Groceries</h1>
         <div className="meta-count">
           <span className="meta-count-item">Total: {totalCount}</span>
           <span className="meta-count-item">Bought: {checkedCount}</span>

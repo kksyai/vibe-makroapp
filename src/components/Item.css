@@ -1,12 +1,13 @@
 .item {
-  background: var(--card, #ffffff);
-  border: 1px solid var(--border, #e5e7eb);
-  border-radius: 12px;
-  padding: 12px;
+  background: #FFF8F0;
+  border: 1px solid #E8DFD3;
+  border-radius: 16px;
+  padding: 16px;
   display: grid;
   gap: 8px;
   align-items: center;
-  transition: all 0.2s ease;
+  transition: all 120ms ease;
+  box-shadow: 0 2px 8px rgba(139, 115, 85, 0.08);
 }
 
 .item.edit-mode {
@@ -18,8 +19,9 @@
 }
 
 .item:hover {
-  border-color: var(--primary-light, #e0e7ff);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  border-color: #D4C4A8;
+  box-shadow: 0 4px 12px rgba(139, 115, 85, 0.12);
+  transform: translateY(-1px);
 }
 
 .item.checked {
@@ -29,29 +31,29 @@
 .item-name-button {
   background: none;
   border: none;
-  color: var(--text-primary, #1f2937);
+  color: #696969;
   font-size: 16px;
   font-weight: 500;
   text-align: left;
   padding: 0;
   cursor: pointer;
-  transition: color 0.2s ease;
+  transition: all 120ms ease;
 }
 
 .item-name-button:hover {
-  color: var(--primary, #6366f1);
+  color: #8B7355;
 }
 
 .item-name {
   font-size: 16px;
   font-weight: 500;
-  color: var(--text-primary, #1f2937);
-  transition: color 0.2s ease;
+  color: #696969;
+  transition: all 120ms ease;
 }
 
 .item-name.strikethrough {
   text-decoration: line-through;
-  color: var(--text-disabled, #9ca3af);
+  color: #D4C4A8;
 }
 
 .item-check {
@@ -66,28 +68,28 @@
   -webkit-appearance: none;
   width: 24px;
   height: 24px;
-  border: 2px solid var(--border, #e5e7eb);
+  border: 2px solid #E8DFD3;
   border-radius: 50%;
-  background: white;
+  background: #FFF8F0;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 120ms ease;
   flex-shrink: 0;
 }
 
 .item-checkbox:checked {
-  background: var(--primary, #6366f1);
-  border-color: var(--primary, #6366f1);
+  background: #8B7355;
+  border-color: #8B7355;
   box-shadow: inset 0 0 0 6px white;
 }
 
 .item-checkbox:hover {
-  border-color: var(--primary, #6366f1);
+  border-color: #8B7355;
 }
 
 .item-qty {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   font-size: 14px;
-  color: var(--text-secondary, #6b7280);
+  color: #8B7355;
   display: flex;
   align-items: center;
   gap: 4px;
@@ -103,12 +105,12 @@
   text-align: right;
   padding: 4px 8px;
   border-radius: 4px;
-  transition: background 0.2s ease;
+  transition: all 120ms ease;
 }
 
 .item-qty-input:focus {
   outline: none;
-  background: var(--primary-light, #e0e7ff);
+  background: rgba(212, 196, 168, 0.2);
 }
 
 .item-unit {
@@ -118,23 +120,23 @@
 
 .item-unit-select {
   padding: 4px 8px;
-  border: 1px solid var(--border, #e5e7eb);
+  border: 1px solid #E8DFD3;
   border-radius: 6px;
-  background: white;
-  color: var(--text-primary, #1f2937);
+  background: #FFF8F0;
+  color: #696969;
   font-size: 14px;
   font-family: inherit;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 120ms ease;
 }
 
 .item-unit-select:hover {
-  border-color: var(--primary, #6366f1);
-  background: var(--primary-light, #e0e7ff);
+  border-color: #8B7355;
+  background: rgba(212, 196, 168, 0.2);
 }
 
 .item-unit-select:focus {
-  outline: 2px solid var(--primary, #6366f1);
+  outline: 2px solid #8B7355;
   outline-offset: -1px;
 }
 
@@ -148,26 +150,26 @@
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  border: 1px solid var(--border, #e5e7eb);
-  background: white;
-  color: var(--text-primary, #1f2937);
+  border: 1px solid #E8DFD3;
+  background: #FFF8F0;
+  color: #696969;
   font-size: 16px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s ease;
+  transition: all 120ms ease;
   padding: 0;
 }
 
 .item-action-button:hover {
-  background: var(--primary-light, #e0e7ff);
-  border-color: var(--primary, #6366f1);
-  color: var(--primary, #6366f1);
+  background: rgba(212, 196, 168, 0.3);
+  border-color: #8B7355;
+  color: #8B7355;
 }
 
 .item-action-button:active {
-  transform: scale(0.9);
+  transform: scale(0.95);
 }
 
 @media (max-width: 640px) {
