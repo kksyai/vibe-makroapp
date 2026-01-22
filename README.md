@@ -19,9 +19,8 @@ Create, organize, and share shopping lists with ease. Perfect for family use or 
 
 ```bash
 # Clone the repository
-git clone https://github.com/kksyai/vibe-makroapp.git
-cd vibe-makroapp
-git checkout second
+git clone https://github.com/kksyai/vibe-groceries.git
+cd vibe-groceries
 
 # Install dependencies
 npm install

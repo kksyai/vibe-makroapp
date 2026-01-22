@@ -1,11 +1,11 @@
 import "./Item.css";
 
-export default function Item({ item, mode, onEdit, onToggleChecked, onQuantityChange, onIncrement, onDecrement, onUnitChange }) {
+export default function Item({ item, mode, onEdit, onToggleChecked, onQuantityChange, onUnitChange }) {
   const isShopMode = mode === "shop";
   const isChecked = item.checked;
 
   return (
-    <li 
+    <li
       className={`item ${isChecked ? "checked" : ""} ${isShopMode ? "shop-mode" : "edit-mode"}`}
       role="listitem"
     >
@@ -57,22 +57,6 @@ export default function Item({ item, mode, onEdit, onToggleChecked, onQuantityCh
                <option value="l">l</option>
                <option value="pack">pack</option>
              </select>
-             <div className="item-actions">
-               <button
-                 className="item-action-button decrement"
-                 onClick={() => onDecrement(item.id)}
-                 aria-label={`Decrease ${item.name} quantity`}
-               >
-                 −
-               </button>
-               <button
-                 className="item-action-button increment"
-                 onClick={() => onIncrement(item.id)}
-                 aria-label={`Increase ${item.name} quantity`}
-               >
-                 +
-               </button>
-             </div>
            </>
          )}
       </span>

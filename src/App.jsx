@@ -4,7 +4,7 @@ import { useShareUrl } from "./hooks/useShareUrl";
 import { useModal } from "./hooks/useModal";
 import { useMobileDetect } from "./hooks/useMobileDetect";
 import { generateId } from "./utils/share";
-import { roundQuantity, getStepForUnit, parseQuantity } from "./utils/validation";
+import { roundQuantity, parseQuantity } from "./utils/validation";
 import Header from "./components/Header";
 import Item from "./components/Item";
 import CategorySection from "./components/CategorySection";
@@ -86,33 +86,13 @@ export default function App() {
 
   function handleUnitChange(id, newUnit) {
     setItems((prev) =>
-      prev.map((item) => (item.id === id ? { ...item, unit: newUnit } : item))
-    );
-  }
-
-  function handleIncrement(id) {
-    setItems((prev) =>
       prev.map((item) => {
         if (item.id !== id) return item;
-        const step = getStepForUnit(item.unit);
-        const newValue = (item.quantity || 0) + step;
+        const quantity = Number(item.quantity || 0);
         return {
           ...item,
-          quantity: roundQuantity(newValue, item.unit)
-        };
-      })
-    );
-  }
-
-  function handleDecrement(id) {
-    setItems((prev) =>
-      prev.map((item) => {
-        if (item.id !== id) return item;
-        const step = getStepForUnit(item.unit);
-        const newValue = Math.max(0, (item.quantity || 0) - step);
-        return {
-          ...item,
-          quantity: roundQuantity(newValue, item.unit)
+          unit: newUnit,
+          quantity: roundQuantity(quantity, newUnit)
         };
       })
     );
@@ -210,8 +190,6 @@ export default function App() {
                   onToggleChecked={handleToggleItemChecked}
                   onQuantityChange={handleQuantityChange}
                   onUnitChange={handleUnitChange}
-                  onIncrement={handleIncrement}
-                  onDecrement={handleDecrement}
                 />
               ))}
             </CategorySection>
@@ -257,4 +235,3 @@ export default function App() {
     </div>
   );
 }
-

@@ -6,7 +6,7 @@ const EDIT_CATEGORIES = [
   "Jars",
   "Frozen",
   "Spices",
-  "Supliers",
+  "Suppliers",
   "Oils",
   "Bread"
 ];
@@ -26,16 +26,34 @@ const SHOP_CATEGORIES = [
   "Household"
 ];
 
+function normalizeCategory(category, fallback) {
+  const trimmed = (category ?? "").trim();
+  if (!trimmed) return fallback;
+  if (trimmed === "Supliers") return "Suppliers";
+  return trimmed;
+}
+
 export function migrateItems(items) {
-  return items.map(item => ({
-    ...item,
-    categoryEdit: item.category || EDIT_CATEGORIES[0],
-    categoryShop: item.category || SHOP_CATEGORIES[0],
-    quantity: item.qty || 0,
-    checked: false,
-    order: item.order || 0,
-    createdAt: item.createdAt || Date.now()
-  }));
+  return items.map((item) => {
+    const categoryEdit = normalizeCategory(
+      item.categoryEdit ?? item.category,
+      EDIT_CATEGORIES[0]
+    );
+    const categoryShop = normalizeCategory(
+      item.categoryShop ?? item.category,
+      SHOP_CATEGORIES[0]
+    );
+
+    return {
+      ...item,
+      categoryEdit,
+      categoryShop,
+      quantity: item.quantity ?? item.qty ?? 0,
+      checked: item.checked ?? false,
+      order: item.order ?? 0,
+      createdAt: item.createdAt ?? Date.now()
+    };
+  });
 }
 
 export function getEditCategories() {
