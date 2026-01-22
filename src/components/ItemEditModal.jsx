@@ -3,7 +3,7 @@ import "./ItemEditModal.css";
 import { getEditCategories, getShopCategories } from "../utils/migration";
 import { validateItem, normalizeName, roundQuantity, getStepForUnit } from "../utils/validation";
 
-export default function ItemEditModal({ item, isOpen, onClose, onSave }) {
+export default function ItemEditModal({ item, isOpen, onClose, onSave, onDelete }) {
   const editCategories = getEditCategories();
   const shopCategories = getShopCategories();
   const units = ["pcs", "kg", "g", "l", "pack"];
@@ -149,6 +149,18 @@ export default function ItemEditModal({ item, isOpen, onClose, onSave }) {
         <div className="modal-actions">
           <button type="button" className="button-secondary" onClick={onClose}>
             Cancel
+          </button>
+          <button
+            type="button"
+            className="button-danger"
+            onClick={() => {
+              if (confirm(`Delete "${form.name}"?`)) {
+                onDelete(item.id);
+                onClose();
+              }
+            }}
+          >
+            Delete
           </button>
           <button type="submit" className="button-primary">
             Save

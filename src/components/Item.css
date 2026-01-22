@@ -116,6 +116,28 @@
   font-size: 14px;
 }
 
+.item-unit-select {
+  padding: 4px 8px;
+  border: 1px solid var(--border, #e5e7eb);
+  border-radius: 6px;
+  background: white;
+  color: var(--text-primary, #1f2937);
+  font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.item-unit-select:hover {
+  border-color: var(--primary, #6366f1);
+  background: var(--primary-light, #e0e7ff);
+}
+
+.item-unit-select:focus {
+  outline: 2px solid var(--primary, #6366f1);
+  outline-offset: -1px;
+}
+
 .item-actions {
   display: flex;
   gap: 2px;
