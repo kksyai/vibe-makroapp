@@ -1,5 +1,4 @@
 import "./Header.css";
-
 export default function Header({ mode, onToggleMode, totalCount, checkedCount, onShare, copied }) {
   return (
     <header className="header">
@@ -10,30 +9,33 @@ export default function Header({ mode, onToggleMode, totalCount, checkedCount, o
           <span className="meta-count-item">Bought: {checkedCount}</span>
         </div>
       </div>
-
       <div className="header-right">
         <button
           className="share-button"
           onClick={onShare}
           aria-label="Share list"
+          disabled={copied}
         >
           Share
           {copied && <span className="copied-badge">Copied!</span>}
         </button>
-
-        <div className="mode-switch-container">
-          <span className="switch-label">{mode === "edit" ? "SHOP" : "EDIT"}</span>
-          <label className="mode-switch">
-            <input
-              type="checkbox"
-              role="switch"
-              aria-checked={mode === "shop"}
-              aria-label={`Switch to ${mode === "edit" ? "shopping" : "edit"} mode`}
-              checked={mode === "shop"}
-              onChange={(e) => onToggleMode(e.target.checked ? "shop" : "edit")}
-            />
-            <span className="switch-slider"></span>
-          </label>
+        <div className="mode-switch">
+          <button
+            type="button"
+            className={`switch-option ${mode === "edit" ? "switch-option--active" : ""}`}
+            onClick={() => onToggleMode("edit")}
+            aria-label="Edit mode"
+          >
+            Edit
+          </button>
+          <button
+            type="button"
+            className={`switch-option ${mode === "shop" ? "switch-option--active" : ""}`}
+            onClick={() => onToggleMode("shop")}
+            aria-label="Shop mode"
+          >
+            Shop
+          </button>
         </div>
       </div>
     </header>

@@ -1,20 +1,18 @@
 .category-section {
-  margin-bottom: 16px;
+  margin-bottom: var(--space-4);
 }
 
 .category-title {
-  margin: 0 0 8px 4px;
-  font-size: 14px;
+  margin: 0 0 0 0 4px;
+  font-size: var(--font-size-small);
   font-weight: 600;
-  color: var(--primary, #6366f1);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+  color: var(--color-text-secondary);
 }
 
 .category-list {
   list-style: none;
   margin: 0;
   padding: 0;
-  display: grid;
-  gap: 8px;
+  display: flex;
+  flex-direction: column;
 }

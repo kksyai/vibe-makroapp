@@ -32,16 +32,12 @@ export default function App() {
 
     arr.sort((a, b) => {
       const categoryKey = mode === "edit" ? "categoryEdit" : "categoryShop";
-      const catCompare = (a[categoryKey] || "").localeCompare(b[categoryKey] || "", "en");
+      const catCompare = (a[categoryKey] || "").localeCompare(b[categoryKey] || "", "");
+
       if (catCompare !== 0) return catCompare;
-
-      const aChecked = a.checked ? 1 : 0;
-      const bChecked = b.checked ? 1 : 0;
-      if (aChecked !== bChecked) return aChecked - bChecked;
-
+      if (a.checked !== b.checked) return a.checked ? -1 : 1;
       return (a.order || 0) - (b.order || 0);
     });
-
     return arr;
   }, [items, mode]);
 
@@ -57,65 +53,91 @@ export default function App() {
       map.get(key).push(item);
     }
 
-    return map;
+    const sortedMap = new Map();
+
+    map.forEach((items, key) => {
+      sortedMap.set(key, [...items].sort((a, b) => {
+        const aChecked = a.checked ? 1 : 0;
+        const bChecked = b.checked ? 1 : 0;
+
+        if (aChecked !== bChecked) return aChecked ? -1 : 1;
+
+        const aOrder = a.order || 0;
+        const bOrder = b.order || 0;
+
+        return (aOrder || 0) - (bOrder || 0);
+      }));
+    });
+
+    return sortedMap;
   }, [visibleItems, mode]);
 
   const totalCount = items.length;
-  const checkedCount = items.filter((i) => i.checked).length;
+  const checkedCount = items.filter(i => i.checked).length;
 
   function handleToggleItemChecked(id) {
-    setItems((prev) =>
-      prev.map((item) =>
-        item.id === id ? { ...item, checked: !item.checked } : item
-      )
+    setItems(prev =>
+      prev.map((item) => ({
+        ...item,
+        checked: item.id === id ? !item.checked : item.checked,
+      }))
     );
   }
 
   function handleQuantityChange(id, value) {
-    setItems((prev) =>
+    setItems(prev =>
       prev.map((item) => {
-        if (item.id !== id) return item;
-        const parsed = parseQuantity(value, item.unit);
-        return {
-          ...item,
-          quantity: roundQuantity(parsed, item.unit)
-        };
+        if (item.id === id) {
+          const parsed = parseQuantity(value, item.unit);
+          return {
+            ...item,
+            quantity: roundQuantity(parsed, item.unit)
+          };
+        }
+        return item;
       })
     );
   }
 
   function handleUnitChange(id, newUnit) {
-    setItems((prev) =>
-      prev.map((item) => (item.id === id ? { ...item, unit: newUnit } : item))
+    setItems(prev =>
+      prev.map((item) => {
+        if (item.id === id) {
+          return { ...item, unit: newUnit };
+        }
+        return item;
+      })
     );
   }
 
   function handleIncrement(id) {
-    setItems((prev) =>
+    setItems(prev =>
       prev.map((item) => {
-        if (item.id !== id) return item;
-        const step = getStepForUnit(item.unit);
-        const newValue = (item.quantity || 0) + step;
-        return {
-          ...item,
-          quantity: roundQuantity(newValue, item.unit)
-        };
+        if (item.id === id) {
+          const step = getStepForUnit(item.unit);
+          const newValue = (item.quantity || 0) + step;
+          return {
+            ...item,
+            quantity: roundQuantity(newValue, item.unit)
+          };
+        }
+        return item;
       })
     );
   }
 
   function handleDecrement(id) {
-    setItems((prev) =>
-      prev.map((item) => {
-        if (item.id !== id) return item;
-        const step = getStepForUnit(item.unit);
-        const newValue = Math.max(0, (item.quantity || 0) - step);
-        return {
-          ...item,
-          quantity: roundQuantity(newValue, item.unit)
-        };
-      })
-    );
+    setItems((prev) => {
+      const item = prev.find((i) => i.id === id);
+      if (!item) return prev;
+
+      const step = getStepForUnit(item.unit);
+      const newValue = Math.max(0, (item.quantity || 0) - step);
+
+      setItems(prev =>
+        prev.map((i) => i.id === id ? { ...i, quantity: roundQuantity(newValue, i.unit) } : i)
+      );
+    });
   }
 
   function handleEditItem(item) {
@@ -126,6 +148,7 @@ export default function App() {
     setItems((prev) =>
       prev.map((item) => (item.id === updatedItem.id ? updatedItem : item))
     );
+    editModal.close();
   }
 
   function handleDeleteItem(id) {
@@ -137,17 +160,22 @@ export default function App() {
       ...prev,
       {
         id: generateId(),
-        ...newItem,
+        name: newItem.name,
+        quantity: "0",
+        unit: "pcs",
         checked: false,
         order: Date.now(),
         createdAt: Date.now()
       }
     ]);
+    addModal.close();
   }
 
   function handleClearChecked() {
     if (confirm("Clear all bought items?")) {
-      setItems((prev) => prev.map((item) => ({ ...item, checked: false })));
+      setItems((prev) =>
+        prev.map((item) => ({ ...item, checked: false }))
+      );
     }
   }
 
@@ -156,8 +184,6 @@ export default function App() {
       setItems([]);
     }
   }
-
-  const lastItem = items[items.length - 1];
 
   return (
     <div className="app">
@@ -170,27 +196,29 @@ export default function App() {
         copied={copied}
       />
 
-      {mode === "edit" && (
-        <section className="controls">
-          <button
-            className="control-button"
-            onClick={handleClearChecked}
-            disabled={checkedCount === 0}
-          >
-            Clear Bought
-          </button>
-          <button
-            className="control-button danger"
-            onClick={handleClearAll}
-            disabled={items.length === 0}
-          >
-            Clear All
-          </button>
-        </section>
-      )}
-
       <main className="list">
-        {groupedItems.size === 0 || visibleItems.length === 0 ? (
+        {Array.from(groupedItems.entries()).map(([category, categoryItems]) => (
+          <CategorySection
+            key={category}
+            category={category}
+          >
+            {categoryItems.map((item) => (
+              <Item
+                key={item.id}
+                item={item}
+                mode={mode}
+                onEdit={handleEditItem}
+                onToggleChecked={handleToggleChecked}
+                onQuantityChange={handleQuantityChange}
+                onUnitChange={handleUnitChange}
+                onIncrement={handleIncrement}
+                onDecrement={handleDecrement}
+              />
+            ))}
+          </CategorySection>
+        ))}
+
+        {groupedItems.size === 0 || visibleItems.length === 0 && (
           <div className="empty-state">
             <p className="empty-text">
               {mode === "edit"
@@ -198,34 +226,22 @@ export default function App() {
                 : "No items to buy yet. Add items in Edit mode."}
             </p>
           </div>
-        ) : (
-          Array.from(groupedItems.entries()).map(([category, categoryItems]) => (
-            <CategorySection key={category} category={category}>
-              {categoryItems.map((item) => (
-                <Item
-                  key={item.id}
-                  item={item}
-                  mode={mode}
-                  onEdit={handleEditItem}
-                  onToggleChecked={handleToggleItemChecked}
-                  onQuantityChange={handleQuantityChange}
-                  onUnitChange={handleUnitChange}
-                  onIncrement={handleIncrement}
-                  onDecrement={handleDecrement}
-                />
-              ))}
-            </CategorySection>
-          ))
         )}
       </main>
 
-      {mode === "edit" && (
-        <FloatingButton
-          onClick={() => addModal.open()}
-          ariaLabel="Add new product"
-        />
-      )}
+      {/* Skip to main content - Accessibility */}
+      <a href="#main" className="skip-link">
+        Skip to main content
+      </a>
 
+      <FloatingButton
+        onClick={() => addModal.open()}
+        aria-label="Add new product"
+      >
+        <span style={{ fontSize: "24px", lineHeight: "1" }}>+</span>
+      </FloatingButton>
+
+      {/* Edit Mode Modal */}
       <ModalOverlay
         isOpen={editModal.isOpen}
         onClose={editModal.close}
@@ -241,6 +257,7 @@ export default function App() {
         />
       </ModalOverlay>
 
+      {/* Add Product Modal */}
       <ModalOverlay
         isOpen={addModal.isOpen}
         onClose={addModal.close}
@@ -251,10 +268,20 @@ export default function App() {
           onClose={addModal.close}
           onCreate={handleCreateItem}
           isMobile={isMobile}
-          lastCategory={lastItem}
+          lastCategory={groupedItems.size > 0 ? groupedItems[groupedItems.size - 1]?.[0] : null}
         />
+      </ModalOverlay>
+
+      {/* Share Modal */}
+      <ModalOverlay
+        isOpen={copied}
+        onClose={() => {}}
+        isMobile={isMobile}
+      >
+        <div style={{ padding: "32px", textAlign: "center" }}>
+          <p className="copied-badge">List copied!</p>
+        </div>
       </ModalOverlay>
     </div>
   );
 }
-

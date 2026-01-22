@@ -1,13 +1,11 @@
 import "./Item.css";
-
-export default function Item({ item, mode, onEdit, onToggleChecked, onQuantityChange, onIncrement, onDecrement, onUnitChange }) {
+export default function Item({ item, mode, onEdit, onToggleChecked, onQuantityChange, onUnitChange, onIncrement, onDecrement }) {
   const isShopMode = mode === "shop";
   const isChecked = item.checked;
-
   return (
-    <li 
-      className={`item ${isChecked ? "checked" : ""} ${isShopMode ? "shop-mode" : "edit-mode"}`}
-      role="listitem"
+    <li
+      className={`item ${isChecked ? "item--checked" : ""}`}
+    role="listitem"
     >
       {isShopMode ? (
         <label className="item-check">
@@ -18,7 +16,7 @@ export default function Item({ item, mode, onEdit, onToggleChecked, onQuantityCh
             aria-label={`Mark ${item.name} as ${isChecked ? "not purchased" : "purchased"}`}
             className="item-checkbox"
           />
-          <span className={`item-name ${isChecked ? "strikethrough" : ""}`}>
+          <span className={`item-name ${isChecked ? "item-name--checked" : ""}`}>
             {item.name}
           </span>
         </label>
@@ -31,51 +29,81 @@ export default function Item({ item, mode, onEdit, onToggleChecked, onQuantityCh
           {item.name}
         </button>
       )}
-
       <span className="item-qty">
         {isShopMode ? (
           <span>{item.quantity} {item.unit}</span>
          ) : (
-           <>
-             <input
-               type="text"
-               inputMode={item.unit === "kg" ? "decimal" : "numeric"}
-               value={item.quantity}
-               onChange={(e) => onQuantityChange(item.id, e.target.value)}
-               aria-label={`Quantity for ${item.name}`}
-               className="item-qty-input"
-             />
-             <select
-               value={item.unit}
-               onChange={(e) => onUnitChange(item.id, e.target.value)}
-               className="item-unit-select"
-               aria-label={`Unit for ${item.name}`}
-             >
-               <option value="pcs">pcs</option>
-               <option value="kg">kg</option>
-               <option value="g">g</option>
-               <option value="l">l</option>
-               <option value="pack">pack</option>
-             </select>
-             <div className="item-actions">
-               <button
-                 className="item-action-button decrement"
-                 onClick={() => onDecrement(item.id)}
-                 aria-label={`Decrease ${item.name} quantity`}
-               >
-                 −
-               </button>
-               <button
-                 className="item-action-button increment"
-                 onClick={() => onIncrement(item.id)}
-                 aria-label={`Increase ${item.name} quantity`}
-               >
-                 +
-               </button>
-             </div>
-           </>
-         )}
+          <>
+            <input
+              type="text"
+              inputMode={item.unit === "kg" ? "decimal" : "numeric"}
+              value={item.quantity}
+              onChange={(e) => onQuantityChange(item.id, e.target.value)}
+              aria-label={`Quantity for ${item.name}`}
+              className="item-qty-input"
+            />
+            <select
+              value={item.unit}
+              onChange={(e) => onUnitChange(item.id, e.target.value)}
+              className="item-unit-select"
+              aria-label={`Unit for ${item.name}`}
+            >
+              <option value="pcs">pcs</option>
+              <option value="kg">kg</option>
+              <option value="g">g</option>
+              <option value="l">l</option>
+              <option value="pack">pack</option>
+            </select>
+          </>
+        )}
       </span>
+      {isShopMode ? (
+        <span className="item-actions">
+          {/* Shop mode does not need manual buttons yet */} 
+          <span>Shopping mode uses simple text</span>
+        </span>
+      ) : (
+        <>
+          <input
+            type="text"
+            inputMode={item.unit === "kg" ? "decimal" : "numeric"}
+            value={item.quantity}
+            onChange={(e) => onQuantityChange(item.id, e.target.value)}
+            aria-label={`Quantity for ${item.name}`}
+            className="item-qty-input"
+          />
+          <select
+            value={item.unit}
+            onChange={(e) => onUnitChange(item.id, e.target.value)}
+            className="item-unit-select"
+            aria-label={`Unit for ${item.name}`}
+          >
+            <option value="pcs">pcs</option>
+            <option value="kg">kg</option>
+            <option value="g">g</option>
+            <option value="l">l</option>
+            <option value="pack">pack</option>
+          </select>
+          <div className="item-actions">
+            <button
+              className="item-action-button decrement"
+              onClick={() => onDecrement(item.id)}
+              aria-label={`Decrease ${item.name} quantity`}
+              disabled={item.quantity === 0}
+            >
+              -
+            </button>
+            <button
+              className="item-action-button increment"
+              onClick={() => onIncrement(item.id)}
+              aria-label={`Increase ${item.name} quantity`}
+            disabled={false}
+            >
+              +
+            </button>
+          </div>
+        </>
+      )}
     </li>
   );
 }
