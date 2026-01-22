@@ -13,8 +13,8 @@
 
 body {
   max-width: 390px;
-  margin: 0;
-  background: #FFF8F0;    /* Cream background */
+  margin: 15px;
+  /*background: #FFF8F0;     Cream background */
   color: var(--text);
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
   font-size: 16px;
@@ -98,7 +98,7 @@ body {
   bottom: 0;
   background-color: var(--border);
   transition: 0.3s;
-  border-radius: 28px;
+  /* border-radius: 28px; */
 }
 
 .switch-slider:before {
@@ -148,7 +148,7 @@ body {
 .panel {
   background: #FFF8F0;
   border: 1px solid #E8DFD3;
-  border-radius: 16px;
+  /* border-radius: 16px; */
   padding: 16px;
   box-shadow: 0 4px 12px rgba(139, 115, 85, 0.08);
   margin-bottom: 14px;
@@ -183,7 +183,7 @@ input, select { /* bubbles */
   width: 100%;
   padding: 12px 12px;
   border: 1px solid #E8DFD3;
-  border-radius: 20px;
+  /* border-radius: 20px; */
   outline: none;
   background: #FFF8F0;
   /* transition: border-color 120ms ease, box-shadow 120ms ease; */
@@ -216,7 +216,7 @@ input:focus, select:focus {
 button {
   border: 1px solid #E8DFD3;
   background: #FFF8F0;
-  border-radius: 20px;
+  /* border-radius: 20px; */
   padding: 10px 12px;
   cursor: pointer;
   margin-right: 10px;
@@ -226,7 +226,7 @@ button {
 
 button.chip {
   border: 1px solid var(--border);
-  border-radius: 20px;
+  /* border-radius: 20px; */
   font-size: 1em;
   color: var(--black);
   padding: 10px 12px;
@@ -239,7 +239,7 @@ button.chip {
   color: white;
   border: none;
   padding: 10px 14px;
-  border-radius: 20px;
+  /* border-radius: 20px; */
   font-weight: 600;
   margin-right: 0px;
 }
@@ -308,7 +308,7 @@ button:disabled {
 .category h2 {
   margin: 0 0 16px 8px;
   font-size: 14px;
-  color: #8B7355;
+  /* color: #8B7355; */
   text-transform: uppercase;
   letter-spacing: 0.06em;
   font-weight: 600;
@@ -323,8 +323,8 @@ button:disabled {
   transform: translateY(-50%);
   width: 4px;
   height: 16px;
-  background: #8B7355;
-  border-radius: 2px;
+  /* background: #8B7355;
+  border-radius: 2px; */
 }
 
 ul {
@@ -342,7 +342,7 @@ ul {
   align-items: center;
   padding: 12px;
   border: 1px solid var(--border);
-  border-radius: 16px;
+  /* border-radius: 16px; */
   box-shadow: 0 10px 22px rgba(0,0,0,0.06);
   margin-bottom: 8px;
 }
@@ -364,7 +364,7 @@ ul {
   appearance: none;
   width: 22px;
   height: 22px;
-  border-radius: 50%;
+  /* border-radius: 50%; */
   border: 2px solid var(--border);
   background: white;
   display: inline-block;
