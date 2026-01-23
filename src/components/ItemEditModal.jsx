@@ -147,23 +147,55 @@ export default function ItemEditModal({ item, isOpen, onClose, onSave, onDelete 
         </div>
 
         <div className="modal-actions">
-          <button type="button" className="button-secondary" onClick={onClose}>
-            Cancel
+          <button
+            type="button"
+            className="button-secondary icon-button"
+            onClick={onClose}
+            aria-label="Cancel"
+          >
+            <svg viewBox="0 0 24 24" className="icon" aria-hidden="true">
+              <path
+                d="M6 6l12 12M18 6l-12 12"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
+            </svg>
           </button>
           <button
             type="button"
-            className="button-danger"
+            className="button-danger icon-button"
             onClick={() => {
               if (confirm(`Delete "${form.name}"?`)) {
                 onDelete(item.id);
                 onClose();
               }
             }}
+            aria-label="Delete"
           >
-            Delete
+            <svg viewBox="0 0 24 24" className="icon" aria-hidden="true">
+              <path
+                d="M9 3h6M4 6h16M7 6l1 14h8l1-14"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
           </button>
-          <button type="submit" className="button-primary">
-            Save
+          <button type="submit" className="button-primary icon-button" aria-label="Save">
+            <svg viewBox="0 0 24 24" className="icon" aria-hidden="true">
+              <path
+                d="M5 12l5 5 9-9"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
           </button>
         </div>
       </form>
