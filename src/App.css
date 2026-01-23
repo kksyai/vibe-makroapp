@@ -188,7 +188,7 @@ input, select { /* bubbles */
   grid-template-columns: repeat(3, 1fr);
   box-sizing: border-box;
   width: 100%;
-  padding: 12px 12px;
+  padding: 8px 8px;
   border: none;
   outline: none;
   background: transparent;
@@ -358,7 +358,7 @@ ul {
   width: 22px;
   height: 22px;
   /* border-radius: 50%; */
-  border: none;
+  border: 2px solid red;
   background: var(--border);
   display: inline-block;
   cursor: pointer;
@@ -438,6 +438,7 @@ ul {
   width: 24px;
   height: 24px;
   padding: 0;
+  border: 2px solid red;
   border-radius: 50%;
   display: inline-flex;
   align-items: center;

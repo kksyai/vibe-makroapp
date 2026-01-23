@@ -38,13 +38,13 @@
 .item-name {
   font-size: 16px;
   font-weight: 500;
-  color: #696969;
+  color: #8B7355;
   transition: none;
 }
 
-.item-name.strikethrough {
+.item.shop-mode.checked {
   text-decoration: line-through;
-  color: #D4C4A8;
+  text-decoration-color: #D4C4A8;
 }
 
 .item-check {
@@ -57,26 +57,26 @@
 .item-checkbox {
   appearance: none;
   -webkit-appearance: none;
-  width: 24px;
-  height: 24px;
-  border: none;
+  /* width: 24px;
+  height: 24px; */
+  border: 2px solid #8B7355;
   border-radius: 50%;
-  background: #E8DFD3;
+  /* background: #E8DFD3; */
   cursor: pointer;
   transition: none;
-  flex-shrink: 0;
 }
 
 .item-checkbox:checked {
-  background: #8B7355;
+  background: #C4B59C;
   border-color: transparent;
   box-shadow: none;
 }
 
 
 .item-qty {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  font-size: 14px;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 500;
   color: #8B7355;
   display: flex;
   align-items: center;
@@ -88,7 +88,8 @@
   border: none;
   background: transparent;
   font-family: inherit;
-  font-size: inherit;
+  font-size: 16px;
+  font-weight: 500;
   color: inherit;
   text-align: right;
   padding: 4px 8px;
@@ -103,7 +104,7 @@
 
 .item-unit {
   font-weight: 500;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .item-unit-select {
@@ -112,8 +113,9 @@
   border-radius: 4px;
   background: transparent;
   color: inherit;
-  font-size: 14px;
+  font-size: 16px;
   font-family: inherit;
+  font-weight: 500;
   cursor: pointer;
   transition: none;
 }
@@ -143,7 +145,8 @@
   }
 
   .item-checkbox {
-    width: 28px;
-    height: 28px;
+    /* width: 28px;
+    height: 28px; 
+    border: 2px solid red;*/
   }
 }
