@@ -17,10 +17,12 @@ const SHOP_CATEGORIES = [
   "Meat & Fish",
   "Nuts",
   "Canned Goods",
+  "Souses",
   "Frozen Foods",
   "Baking",
   "Spices & Herbs",
   "Pasta & Grains",
+  "Bread",
   "Alcohol",
   "Drinks",
   "Household"
