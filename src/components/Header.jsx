@@ -5,13 +5,7 @@ export default function Header({ mode, onToggleMode, totalCount, checkedCount, o
     <header className="header">
       <div className="header-left">
         <h1 className="header-title">Shopping List</h1>
-        <div className="meta-count">
-          <span className="meta-count-item">Total: {totalCount}</span>
-          <span className="meta-count-item">Bought: {checkedCount}</span>
-        </div>
-      </div>
 
-      <div className="header-right">
         <button
           className="share-button"
           onClick={onShare}
@@ -20,6 +14,15 @@ export default function Header({ mode, onToggleMode, totalCount, checkedCount, o
           Share
           {copied && <span className="copied-badge">Copied!</span>}
         </button>
+
+      </div>
+
+      <div className="header-right">
+
+        <div className="meta-count">
+          <span className="meta-count-item">Total: {totalCount}</span>
+          <span className="meta-count-item">Bought: {checkedCount}</span>
+        </div>
 
         <div className="mode-switch-container">
           <span className="switch-label">{mode === "edit" ? "SHOP" : "EDIT"}</span>

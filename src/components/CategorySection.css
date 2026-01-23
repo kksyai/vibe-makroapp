@@ -1,5 +1,5 @@
 .category-section {
-  margin-bottom: 16px;
+  margin-bottom: 10px;
 }
 
 .category-title {
@@ -16,5 +16,5 @@
   margin: 0;
   padding: 0;
   display: grid;
-  gap: 8px;
+  gap: 0px;
 }

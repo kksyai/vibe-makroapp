@@ -1,12 +1,13 @@
 .item {
-  background: var(--card, #ffffff);
-  border: 1px solid var(--border, #e5e7eb);
-  border-radius: 12px;
-  padding: 12px;
+  background: #FFF8F0;
+  border: none;
+  border-radius: 0;
+  padding: 10px;
   display: grid;
-  gap: 8px;
+  gap: 6px;
   align-items: center;
-  transition: all 0.2s ease;
+  transition: none;
+  box-shadow: none;
 }
 
 .item.edit-mode {
@@ -25,26 +26,25 @@
 .item-name-button {
   background: none;
   border: none;
-  color: var(--text-primary, #1f2937);
+  color: #696969;
   font-size: 16px;
   font-weight: 500;
   text-align: left;
   padding: 0;
   cursor: pointer;
-  transition: color 0.2s ease;
+  transition: none;
 }
-
 
 .item-name {
   font-size: 16px;
   font-weight: 500;
-  color: var(--text-primary, #1f2937);
-  transition: color 0.2s ease;
+  color: #696969;
+  transition: none;
 }
 
 .item-name.strikethrough {
   text-decoration: line-through;
-  color: var(--text-disabled, #9ca3af);
+  color: #D4C4A8;
 }
 
 .item-check {
@@ -59,25 +59,25 @@
   -webkit-appearance: none;
   width: 24px;
   height: 24px;
-  border: 2px solid var(--border, #e5e7eb);
+  border: none;
   border-radius: 50%;
-  background: white;
+  background: #E8DFD3;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: none;
   flex-shrink: 0;
 }
 
 .item-checkbox:checked {
-  background: var(--primary, #6366f1);
-  border-color: var(--primary, #6366f1);
-  box-shadow: inset 0 0 0 6px white;
+  background: #8B7355;
+  border-color: transparent;
+  box-shadow: none;
 }
 
 
 .item-qty {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   font-size: 14px;
-  color: var(--text-secondary, #6b7280);
+  color: #8B7355;
   display: flex;
   align-items: center;
   gap: 4px;
@@ -93,12 +93,12 @@
   text-align: right;
   padding: 4px 8px;
   border-radius: 4px;
-  transition: background 0.2s ease;
+  transition: none;
 }
 
 .item-qty-input:focus {
   outline: none;
-  background: var(--primary-light, #e0e7ff);
+  background: rgba(212, 196, 168, 0.2);
 }
 
 .item-unit {
@@ -114,14 +114,12 @@
   color: inherit;
   font-size: 14px;
   font-family: inherit;
-  font-weight: 500;
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: none;
 }
 
 .item-unit-select:focus {
   outline: none;
-  background: var(--primary-light, #e0e7ff);
 }
 
 @media (max-width: 640px) {

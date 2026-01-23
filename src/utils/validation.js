@@ -22,7 +22,9 @@ export function validateItem(item) {
 }
 
 export function normalizeName(name) {
-  return (name ?? "").trim();
+  const trimmed = (name ?? "").trim();
+  if (!trimmed) return "";
+  return trimmed.charAt(0).toUpperCase() + trimmed.slice(1);
 }
 
 export function normalizeCategory(category) {
