@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { saveItems, loadItems } from "../utils/storage";
 import { decompressItems } from "../utils/share";
 import { migrateItems } from "../utils/migration";
+import { getSeedItems } from "../utils/seed";
 
 export function useLocalStorage() {
   const [items, setItems] = useState(() => {
@@ -19,6 +20,10 @@ export function useLocalStorage() {
     const loaded = loadItems();
     if (loaded.length > 0) {
       return migrateItems(loaded);
+    }
+    const seeded = getSeedItems();
+    if (seeded.length > 0) {
+      return seeded;
     }
     return [];
   });

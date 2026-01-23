@@ -30,18 +30,6 @@ export default function App() {
       arr = arr.filter((i) => i.quantity > 0);
     }
 
-    arr.sort((a, b) => {
-      const categoryKey = mode === "edit" ? "categoryEdit" : "categoryShop";
-      const catCompare = (a[categoryKey] || "").localeCompare(b[categoryKey] || "", "en");
-      if (catCompare !== 0) return catCompare;
-
-      const aChecked = a.checked ? 1 : 0;
-      const bChecked = b.checked ? 1 : 0;
-      if (aChecked !== bChecked) return aChecked - bChecked;
-
-      return (a.order || 0) - (b.order || 0);
-    });
-
     return arr;
   }, [items, mode]);
 
