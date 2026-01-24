@@ -37,14 +37,16 @@ export function getStepForUnit(unit) {
 
 export function parseQuantity(value, unit) {
   if (unit === "kg" || unit === "g" || unit === "l") {
-    return parseFloat(value) || 0;
+    const normalized = String(value ?? "").replace(",", ".");
+    const parsed = parseFloat(normalized);
+    return Number.isFinite(parsed) ? parsed : 0;
   }
   return parseInt(value, 10) || 0;
 }
 
 export function roundQuantity(value, unit) {
   if (unit === "kg") {
-    return Math.max(0, Math.round(value * 10) / 10);
+    return Math.max(0, Number(value) || 0);
   }
   return Math.max(0, Math.round(value));
 }
