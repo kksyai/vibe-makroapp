@@ -79,9 +79,12 @@
   font-size: 16px;
   font-weight: 500;
   color: #8B7355;
-  display: flex;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: max-content;
   align-items: center;
-  gap: 4px;
+  column-gap: 6px;
+  white-space: nowrap;
 }
 
 .item-qty-input {
@@ -118,7 +121,16 @@
   font-family: inherit;
   font-weight: 500;
   cursor: pointer;
+  min-width: 4ch;
   transition: none;
+}
+
+.item-qty .item-unit-select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: none;
+  padding-right: 0;
 }
 
 .item-unit-select:focus {
