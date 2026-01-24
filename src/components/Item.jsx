@@ -53,6 +53,7 @@ export default function Item({ item, mode, onEdit, onToggleChecked, onQuantityCh
                 value={qtyInput}
                 onChange={(e) => setQtyInput(e.target.value)}
                 onBlur={handleQuantityBlur}
+                onFocus={(e) => e.target.select()}
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
                     e.preventDefault();
