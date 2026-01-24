@@ -93,6 +93,7 @@ export default function AddProductModal({ isOpen, onClose, onCreate, lastCategor
               inputMode={form.unit === "kg" ? "decimal" : "numeric"}
               value={form.quantity}
               onChange={(e) => handleChange("quantity", e.target.value)}
+              onFocus={(e) => e.target.select()}
               step={getStepForUnit(form.unit)}
               className={errors.quantity ? "error" : ""}
               aria-invalid={!!errors.quantity}
