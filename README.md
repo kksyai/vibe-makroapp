@@ -193,6 +193,14 @@ npm run lint
 npm run preview
 ```
 
+## Deploy (Vercel)
+
+- Framework preset: Vite
+- Install command: `npm install`
+- Build command: `npm run build`
+- Output directory: `dist`
+- Node.js: 18+ (prefer 20)
+
 ## Migration
 
 This branch includes automatic data migration from version 1 to version 2:

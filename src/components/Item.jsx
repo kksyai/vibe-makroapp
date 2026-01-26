@@ -1,17 +1,13 @@
 import "./Item.css";
-import { useEffect, useState } from "react";
+import { useId } from "react";
 
 export default function Item({ item, mode, onEdit, onToggleChecked, onQuantityChange, onUnitChange }) {
   const isShopMode = mode === "shop";
   const isChecked = item.checked;
-  const [qtyInput, setQtyInput] = useState(() => (item.quantity ?? "").toString());
+  const inputKeySalt = useId();
 
-  useEffect(() => {
-    setQtyInput((item.quantity ?? "").toString());
-  }, [item.quantity]);
-
-  function handleQuantityBlur() {
-    onQuantityChange(item.id, qtyInput);
+  function handleQuantityBlur(e) {
+    onQuantityChange(item.id, e.currentTarget.value);
   }
 
   return (
@@ -48,10 +44,10 @@ export default function Item({ item, mode, onEdit, onToggleChecked, onQuantityCh
          ) : (
            <>
               <input
+                key={`${inputKeySalt}:${item.id}:${item.quantity ?? ""}:${item.unit}`}
                 type="text"
                 inputMode={item.unit === "kg" ? "decimal" : "numeric"}
-                value={qtyInput}
-                onChange={(e) => setQtyInput(e.target.value)}
+                defaultValue={(item.quantity ?? "").toString()}
                 onBlur={handleQuantityBlur}
                 onFocus={(e) => e.target.select()}
                 onKeyDown={(e) => {
